@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Tweeting Favourite Quotes!</title>
+
+	<style media="screen">
+		body {
+			font-family: cursive;
+			width: 100%;
+			height: 700px;
+		}
+
+		h1 {
+			margin: 1em auto;
+			/*color: blue;*/
+			font-size: 2em;
+			text-align: center;
+		}
+
+		button {
+			width: 150px;
+			padding: 0.5em;
+			background-color: red;
+			font-size: 1.1em;
+			border-color: red;
+			border-radius: 20px;
+		}
+
+		#btn {
+			text-align: center;
+			/*border: 1px solid #000;*/
+		}
+
+		.quote-container {
+			height: 70%;
+			width: 50%;
+			margin: 1em auto;
+			display: flex;
+			flex-flow: column;
+		}
+
+		.quote {
+			font-size: 2.5em;
+			flex: 1;
+			margin: 1em auto;
+			text-transform: capitalize;
+			text-align: center;
+		}
+
+		.sayer {
+			font-size: 4em;
+			flex: 1;
+			text-align: center;
+		}
+
+		.twitter {
+			margin: auto;
+			flex: 1;
+		}
+	</style>
+</head>
+
+<body>
+
+	<h1> Tweet Your Favourite Quotes! </h1>
+
+	<div id="btn">
+		<button type="button" class="button" id="buton"> Click Here </button>
+	</div>
+
+	<div class="quote-container">
+		<div class="quote"></div>
+		<div class="sayer"></div>
+		<div class="twitter"><a class="twitter-share-button" id="twitter-button" href="https://twitter.com/intent/tweet?url=http://www.nishant-kaushish.com&amp;hashtags=inspirational,motivational,self-help&amp;text=I%20Love%20Quotes" data-size="large">
+	 Tweet</a></div>
+	</div>
+	<!--  -->
+
+	<script>
+		window.twttr = (function(d, s, id) {
+			var js, fjs = d.getElementsByTagName(s)[0],
+				t = window.twttr || {};
+			if (d.getElementById(id)) return t;
+			js = d.createElement(s);
+			js.id = id;
+			js.src = "https://platform.twitter.com/widgets.js";
+			fjs.parentNode.insertBefore(js, fjs);
+
+			t._e = [];
+			t.ready = function(f) {
+				t._e.push(f);
+			};
+
+			return t;
+		}(document, "script", "twitter-wjs"));
+	</script>
+
+	<script type="text/javascript">
+		var buton = document.getElementById("buton");
+		var allchar = "0123456789ABCDEF";
+		buton.addEventListener("click", myFun);
+
+		function myFun() {
+
+			var request = new XMLHttpRequest();
+			request.open("GET", "https://gist.githubusercontent.com/dmakk767/9375ff01aff76f1788aead1df9a66338/raw/491f8c2e91b7d3b8f1c8230e32d9c9bc1a1adfa6/Quotes.json%2520");
+			var ourData = "";
+			request.onload = function() {
+
+				ourData = JSON.parse(request.responseText);
+				console.log(ourData);
+				changeColor();
+				randomQuote();
+			};
+			request.send();
+
+
+			function changeColor() {
+				var randcol = "";
+				for (var i = 0; i < 6; i++) {
+					randcol += allchar[Math.floor(Math.random() * 16)];
+				}
+				document.body.style.backgroundColor = "#" + randcol;
+			}
+
+			function randomQuote() {
+				var quote = document.querySelector(".quote");
+				var sayer = document.querySelector(".sayer");
+				var randomIndex = Math.floor(Math.random() * 101);
+
+				quote.innerText = ourData[randomIndex].quote;
+				sayer.innerText = `~ ${ourData[randomIndex].name}`;
+
+				var twitter = document.querySelector(".twitter");
+				console.log(twitter);
+				// twitter.addEventListener("click", tweetQuote);
+
+				//
+				// function tweetQuote() {
+				// 	var displayQuote = encodeURIComponent(quote.innerText);
+				// 	console.log(displayQuote);
+				// 	twitter.href = twitter.href + displayQuote;
+				// }
+			}
+
+		}
+	</script>
+
+</body>
+
+</html>
