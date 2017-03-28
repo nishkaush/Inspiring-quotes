@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title> Random background Color Change</title>
+
+	<style media="screen">
+		body {
+			font-family: cursive;
+			width: 100%;
+			height: 700px;
+		}
+
+		h1 {
+			margin: 2em auto;
+			/*color: blue;*/
+			font-size: 2em;
+			text-align: center;
+		}
+
+		button {
+			width: 150px;
+			padding: 0.5em;
+			background-color: red;
+			font-size: 1.1em;
+			border-color: red;
+			border-radius: 20px;
+		}
+
+		#btn {
+			text-align: center;
+			/*border: 1px solid #000;*/
+		}
+
+		.quote-container {
+			height: 50%;
+			width: 50%;
+			/*background-color: yellow;*/
+			margin: 4em auto;
+			display: flex;
+			flex-flow: column;
+		}
+
+		.quote {
+			font-size: 2.5em;
+			flex: 2;
+			margin: 1em auto;
+			/*border: 1px solid #000;*/
+			text-transform: capitalize;
+			text-align: center;
+		}
+
+		.sayer {
+			font-size: 4em;
+			flex: 1;
+			/*border: 1px solid #000;*/
+			text-align: center;
+		}
+	</style>
+</head>
+
+<body>
+
+	<h1> Random Quotes With Random Colors </h1>
+
+	<div id="btn">
+		<button type="button" class="button" id="buton"> Click Here </button>
+	</div>
+
+	<div class="quote-container">
+		<div class="quote"></div>
+		<div class="sayer"></div>
+	</div>
+
+	<script type="text/javascript">
+		var buton = document.getElementById("buton");
+
+		var allchar = "0123456789ABCDEF";
+
+		buton.addEventListener("click", myFun);
+
+		function myFun() {
+
+			var request = new XMLHttpRequest();
+			request.open("GET", "https://gist.githubusercontent.com/dmakk767/9375ff01aff76f1788aead1df9a66338/raw/491f8c2e91b7d3b8f1c8230e32d9c9bc1a1adfa6/Quotes.json%2520");
+			var ourData = "";
+			request.onload = function() {
+
+				ourData = JSON.parse(request.responseText);
+				console.log(ourData);
+				changeColor();
+				randomQuote();
+			};
+			request.send();
+
+
+			function changeColor() {
+				var randcol = "";
+				for (var i = 0; i < 6; i++) {
+					randcol += allchar[Math.floor(Math.random() * 16)];
+				}
+				document.body.style.backgroundColor = "#" + randcol;
+			}
+
+			function randomQuote() {
+				var quote = document.querySelector(".quote");
+				var sayer = document.querySelector(".sayer");
+
+				var randomIndex = Math.floor(Math.random() * 101);
+
+				quote.innerText = ourData[randomIndex].quote;
+				sayer.innerText = `~ ${ourData[randomIndex].name}`;
+			}
+
+		}
+	</script>
+
+</body>
+
+</html>
